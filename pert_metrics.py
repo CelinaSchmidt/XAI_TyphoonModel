@@ -23,15 +23,35 @@ def PGI(data, model, col_list, mean, std_fix = 0, std_spec = 0, seed=None):
 from sklearn.metrics import auc
 import matplotlib.pyplot as plt
 
-def auc_PGI(feature_list, X_train, model, mean = 0, std_fix = 0, std_spec = 0, seed=None):
+# def auc_PGI(feature_list, X_train, model, mean = 0, std_fix = 0, std_spec = 0, seed=None, label = False):
+#     PGI_list = []
+#     for k in range(len(feature_list)):
+#         p = PGI(X_train, model, feature_list[:k], mean, std_fix = std_fix, std_spec = std_spec, seed=None)
+#         PGI_list.append(p)
+#     plt.plot(PGI_list, la)
+#     plt.xlabel('Number of Features')
+#     #plt.xticks(range(len(PGI_list)), feature_list, rotation=90)
+#     plt.xticks(range(len(PGI_list)), list(range(1,19)))
+
+#     print(auc(range(len(PGI_list)), PGI_list))
+#     if label:
+#         plt.legend()
+
+def auc_PGI(feature_list, data, model, mean = 0, std_fix = 0, std_spec = 0, seed=None, label = None, color = None):
     PGI_list = []
     for k in range(len(feature_list)):
-        p = PGI(X_train, model, feature_list[:k], mean, std_fix = std_fix, std_spec = std_spec, seed=None)
+        p = PGI(data, model, feature_list[:k], mean, std_fix = std_fix, std_spec = std_spec, seed=None)
         PGI_list.append(p)
-    plt.plot(PGI_list)
+    a = (auc(range(len(PGI_list)), PGI_list))
+    if color:
+        plt.plot(PGI_list, label = "{} (AUC: {:.3f})".format(label, a), color = color)
+    else:
+        plt.plot(PGI_list, label = "{} (AUC: {:.3f})".format(label, a))
     plt.xlabel('Number of Features')
-    plt.xticks(range(len(PGI_list)), feature_list, rotation=90)
-    print(auc(range(len(PGI_list)), PGI_list))
+    plt.xticks(range(len(PGI_list)), list(range(1,19)))
+    if label:
+        plt.legend()
+
 
 
 
